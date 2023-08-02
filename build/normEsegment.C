@@ -17,7 +17,7 @@ void normEsegment()
     double extEBeamrange[2]= {param_inputs[27][0],param_inputs[27][1]};
 
     TChain* MUSICdata = new TChain("Data_R");
-    string fileName =  pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,RunNumber,FileNumber);
+    string fileName =  pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,FileNumber);
     cout<<fileName<<endl;    MUSICdata->Add(fileName.c_str());
     MUSICdata->SetBranchStatus("*", 0);
     //"""""""""""""""""""""
