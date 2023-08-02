@@ -17,7 +17,7 @@ int BuildingEvent(int RunNumber, int file)
     Double_t BeamExternal[2]={param_inputs[22][0], param_inputs[22][1]};
     
     TChain* MUSICdata = new TChain("Data_R");
-    string fileName =  pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,RunNumber,file);
+    string fileName =  pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,file);
     cout<<fileName<<endl;    MUSICdata->Add(fileName.c_str());
     //"""""""""""""""""""""
     //Structure saved converted file
