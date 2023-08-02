@@ -12,7 +12,7 @@ void checkingTimeSync()
     int RunNumber = param_inputs[29][0];    int FileNumber = param_inputs[30][0];     double limE[2]={param_inputs[26][0],param_inputs[26][1]};
     double TimeMin= param_inputs[31][0];//ms
     TChain* MUSICdata = new TChain("Data_R");
-    string fileName =  pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,RunNumber,FileNumber );
+    string fileName =  pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,FileNumber );
     cout<<fileName<<endl;    MUSICdata->Add(fileName.c_str());     double run_portion=1.0; if(TimeMin<1){run_portion=0.5;}
     Double_t shiftTime[NBoard]; int looked_for_shift = extraction_ShiftBoardTime(RunNumber,shiftTime);
     if(looked_for_shift==0){for(int b=0;b<NBoard;b++){shiftTime[b]=0;} cout<<"!!! time shifts per board not found !!!"<<endl;}
