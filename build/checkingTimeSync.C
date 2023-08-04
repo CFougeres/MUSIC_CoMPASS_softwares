@@ -62,11 +62,12 @@ void checkingTimeSync()
        MUSICdata->GetEntry(entryVec[i]);             temp_index=Map_DAQCha_to_MUSICStrip[Board][Channel];
        if(Energy>limE[0] && Energy<limE[1]){
            ChTimeAfter->Fill((timestampVec[i]*1e-12)*1e+3, Board*NChannel+Channel);
-           if(Board==0){ if(temp_index==0 ||  temp_index==17){timeB0= (timestampVec[i]*1e-12)*1e+6;}}
+           if(Board==0){ if(temp_index==0 ||  temp_index==17 ||  temp_index>100){timeB0= (timestampVec[i]*1e-12)*1e+6;}}
            if(Board>0){
                if(temp_index<NChannel){if(temp_index%2==0){timeBother= (timestampVec[i]*1e-12)*1e+6;}}
                if(temp_index>NChannel-1){if((temp_index-NChannel)%2==1){timeBother= (timestampVec[i]*1e-12)*1e+6;}}
-           }
+               if(temp_index>100){timeBother= (timestampVec[i]*1e-12)*1e+6;}         
+	}
            dt=timeB0-timeBother;
            dThisto->Fill(dt);
        }
