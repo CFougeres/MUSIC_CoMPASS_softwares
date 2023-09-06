@@ -30,7 +30,8 @@ void OnlineVisu()
 		data_path = pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,FileNumber);
 	}
 	if(DetectorType==0){
-		data_path = pathRun+ Form("/DAQ/Data_runSi_%i/RAW/Data_runSi_%i_%i.root",RunNumber, RunNumber,FileNumber);
+		if(FileNumber==0){data_path = pathRun+ Form("/DAQ/runSi_%i/RAW/DataR_runSi_%i.root",RunNumber, RunNumber);}
+		if(FileNumber>0){data_path = pathRun+ Form("/DAQ/runSi_%i/RAW/DataR_runSi_%i_%i.root",RunNumber, RunNumber,FileNumber);}
 	}
 	cout<<data_path<<endl;    Tree_data->Add(data_path.c_str());
     //"""""""""""""""""""""
