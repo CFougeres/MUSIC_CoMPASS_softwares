@@ -1,32 +1,8 @@
 0 GENERAL
 1 TimeWindow 10
-2 normMUSIC 10
-3 AppliedCalib 1
-4 BUILDERtoROOT
-5 Nrun 2
-6 RunNumber 1 2 
-7 FilesPerRun 3 2
-8 InitFile 0
-9 ONLINEvisu
-10 RunNumber 1
-11 FileNumber 0
-12 DetectorType 1
-13 TIMEshift
-14 RunNumber 1
-15 FileNumber 0
-16 OverlapTime 2.0 4.0
-17 threshDT 160.0
-18 RefSignal 3 0 1600 2200
-19 2ndSignal 0 8 1600 2200
-20 BUILDINGevent
-21 Ibeam 1000
-22 ExtBeamCentroid 824.889 898.055
-23 NORMEsegment
-24 RunNumber 1
-25 FileNumber 0
-26 segEBeamrange 1600 2200
-27 extEBeamrange 600 1000
-28 CHECKINGtimeSYNC
-29 RunNumber 1
-30 FileNumber 0
-31 msTimeMin 1.0
+2 ONLINEvisu
+3 NumberOfRun 1
+4 RunsNumbers 2
+5 NumberOfSubFiles 1
+6 InitSubFiles 0
+7 RangePositionCoeff 1
