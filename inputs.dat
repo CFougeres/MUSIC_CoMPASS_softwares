@@ -1,8 +1,8 @@
 0 GENERAL
-1 TimeWindow 10
+1 TimeWindow 50
 2 ONLINEvisu
 3 NumberOfRun 1
 4 RunsNumbers 1
 5 NumberOfSubFiles 1
 6 InitSubFiles 0
-7 RangePositionCoeff 50000
+7 RangePositionCoeff 200000
