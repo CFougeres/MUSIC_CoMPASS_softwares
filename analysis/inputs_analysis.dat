@@ -1,9 +1,0 @@
-0 Nrun 1
-1 RunNumber 1 
-2 FilesPerRun 1
-3 InitFile 0
-4 normMUSIC 10 1
-5 reactionStrip 3
-6 lengthsDE-E 3 9
-7 thresholdSmooth 1.0
-8 thresholdJump 0.5
