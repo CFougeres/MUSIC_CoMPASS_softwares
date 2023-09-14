@@ -1,7 +1,5 @@
 /**************************************
- * root script for online visualization 
- * of MUSIC data ==1
- * of Si data ==0
+ * root script for online visualization
 ***************************************/
 #include "build/OnlineVisu.h"
 
@@ -55,13 +53,13 @@ void OnlineVisu()
     //"""""""""""""""""""""
     //Plot definition
     //"""""""""""""""""""""
- //   gStyle->SetOptLogz(1);
+   // gStyle->SetOptLogy(1);
     TimingRate = new TH1F("TimingRate","Timing;Timestamp (s);Counts/1#mus",binTr, Tr[0], Tr[1]);
     EvtMultiplicity = new TH2F("EvtMultiplicity",";Evt time (s);Multiplicity",binTr,Tr[0],Tr[1],16,0,15);
-    hA4_P23 = new TH2F("hA4_P23","; #DeltaE_{4} (arb. u.);P23 (arb. u.)",binEr, Er[0], Er[1],binEr, Er[0], Er[1]);
-    hA5_P23 = new TH2F("hA5_P23","; #DeltaE_{5} (arb. u.);P23 (arb. u.)",binEr, Er[0], Er[1],binEr, Er[0], Er[1]);
-    hA5_P67 = new TH2F("hA5_P67","; #DeltaE_{5} (arb. u.);P67 (arb. u.)",binEr, Er[0], Er[1],binEr, Er[0], Er[1]);
-    hA8_P67 = new TH2F("hA8_P68","; #DeltaE_{8} (arb. u.);P67 (arb. u.)",binEr, Er[0], Er[1],binEr, Er[0], Er[1]);
+    hA4_P23 = new TH2F("hA4_P23","; #DeltaE_{4} (arb. u.);P23 (arb. u.)",binEr, Er[0], Er[1],2*binEr, -Er[1], Er[1]);
+    hA5_P23 = new TH2F("hA5_P23","; #DeltaE_{5} (arb. u.);P23 (arb. u.)",binEr, Er[0], Er[1],2*binEr, -Er[1], Er[1]);
+    hA5_P67 = new TH2F("hA5_P67","; #DeltaE_{5} (arb. u.);P67 (arb. u.)",binEr, Er[0], Er[1],2*binEr, -Er[1], Er[1]);
+    hA8_P67 = new TH2F("hA8_P68","; #DeltaE_{8} (arb. u.);P67 (arb. u.)",binEr, Er[0], Er[1],2*binEr, -Er[1], Er[1]);
 
     for( int i = 0 ; i < NAnode; i++){
         hA[i] = new TH1F(Form("hA%0d",i), Form("A%0d;#DeltaE (a.u.)",i+1), binEr, Er[0], Er[1]);
@@ -87,18 +85,19 @@ void OnlineVisu()
     for(int j=1;j<nStat*proportion_of_file_for_Plot;j++){
         Tree_data->GetEntry(entryVec[j]);
         if(timestampVec[j]-timestampVec[j-1]<0){ std::cout<<"issue time sorting "<<std::endl;break;}
-        diffTimeEvent=(timestampVec[j]-evt_time)*1e6;
+        diffTimeEvent=(timestampVec[j]*1e-12-evt_time)*1e6;
         if(diffTimeEvent>TimeWindow){
             EvtMultiplicity->Fill( evt_time, evt_mult);
             evt_time=(timestampVec[j])*1e-12;
-            P23 =  RangePositionCoeff*(( dE_anode[1]-dE_anode[2])/(dE_anode[1]+dE_anode[2]));
-            P67 =  RangePositionCoeff*((dE_anode[5]-dE_anode[6])/(dE_anode[5]+dE_anode[6]));
-            hA4_P23->Fill(dE_anode[3], P23);  hA5_P23->Fill(dE_anode[4], P23);
-            hA5_P67->Fill(dE_anode[4], P67);  hA8_P67->Fill(dE_anode[7], P67);
+            if(dE_anode[1]*dE_anode[2]>0){P23 = RangePositionCoeff*((dE_anode[1]-dE_anode[2])/(dE_anode[1]+dE_anode[2]));}
+           // cout<<P23 <<endl;
+            if(dE_anode[5]*dE_anode[6]>0) {P67 =  RangePositionCoeff*((dE_anode[5]-dE_anode[6])/(dE_anode[5]+dE_anode[6]));}
+            hA4_P23->Fill(dE_anode[3], P23); hA5_P23->Fill(dE_anode[4], P23);
+            hA5_P67->Fill(dE_anode[4], P67); hA8_P67->Fill(dE_anode[7], P67);
             for(int a=0;a<NAnode;a++){
                 dE_anode[a]=0.;
             }
-            evt_mult=0;
+            evt_mult=0;  P23=0;  P67=0;
         }
         temp_index=Map_DAQCha_to_MONICAsignal[0][Channel];
         if(temp_index<NAnode+1){   dE_anode[temp_index-1]=Energy;TimingRate->Fill(evt_time);  hA[temp_index-1]->Fill( dE_anode[temp_index-1]);evt_mult+=1;        }
@@ -114,21 +113,21 @@ void OnlineVisu()
     TimingRate->GetXaxis()->CenterTitle();TimingRate->GetYaxis()->CenterTitle();
     crate->cd(2); EvtMultiplicity->Draw("colz");
     EvtMultiplicity->GetXaxis()->CenterTitle();EvtMultiplicity->GetYaxis()->CenterTitle();
-    cposi->cd(1); hA4_P23->Draw("colz");
+    cposi->cd(1); hA4_P23->Draw("colz"); gPad->SetLogz();
     hA4_P23->GetXaxis()->CenterTitle(); hA4_P23->GetYaxis()->CenterTitle();
-    cposi->cd(2); hA5_P23->Draw("colz");
+    cposi->cd(2); hA5_P23->Draw("colz"); gPad->SetLogz();
     hA5_P23->GetXaxis()->CenterTitle(); hA5_P23->GetYaxis()->CenterTitle();
-    cposi->cd(3);hA5_P67->Draw("colz");
+    cposi->cd(3);hA5_P67->Draw("colz");gPad->SetLogz();
     hA5_P67->GetXaxis()->CenterTitle(); hA5_P67->GetYaxis()->CenterTitle();
-    cposi->cd(4);hA8_P67->Draw("colz");
+    cposi->cd(4);hA8_P67->Draw("colz");gPad->SetLogz();
     hA8_P67->GetXaxis()->CenterTitle(); hA8_P67->GetYaxis()->CenterTitle();
     for(int a=0;a<NAnode;a++){
-        cindi->cd(a+1); hA[a]->Draw();
+        cindi->cd(a+1); hA[a]->Draw(); gPad->SetLogy();
         hA[a]->GetXaxis()->CenterTitle();hA[a]->GetYaxis()->CenterTitle();
     }
-    cindi->cd(9);    hCath->Draw();     hCath->SetLineColor(2);
-    hCath->GetXaxis()->CenterTitle();    hCath->GetYaxis()->CenterTitle();
-    hGrid->Draw("same");      hGrid->SetLineColor(4);
+    cindi->cd(9);    hGrid->Draw();  gPad->SetLogy();   hGrid->SetLineColor(4);
+    hGrid->GetXaxis()->CenterTitle();    hGrid->GetYaxis()->CenterTitle();
+    hCath->Draw("same");      hCath->SetLineColor(2);
     legend->AddEntry("hCath","Cathode","l"); legend->AddEntry("hGrid","Grid","l");       legend->Draw("same");
  
 }
