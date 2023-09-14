@@ -12,7 +12,7 @@ Contact: chloe.fougeres@gmail.com
 >>> corresponds to command in a terminal
 
 - *Installation*
->>> git clone -b MONICA_softwares https://github.com/CFougeres/Simulation_MUSIC/MUSIC_CoMPASS_softwares
+>>> git clone -b MONICA_softwares https://github.com/CFougeres/MUSIC_CoMPASS_softwares;  mv MUSIC_CoMPASS_softwares/ MONICA_softwares/;
 
 - *Project structure*
   
