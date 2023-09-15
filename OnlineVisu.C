@@ -64,8 +64,8 @@ void OnlineVisu()
     for( int i = 0 ; i < NAnode; i++){
         hA[i] = new TH1F(Form("hA%0d",i), Form("A%0d;#DeltaE (a.u.)",i+1), binEr, Er[0], Er[1]);
     }
-    hGrid = new TH1F("hGrid","Grid;#DeltaE (a.u.)", binEr, Er[0], Er[1]);
-    hCath = new TH1F("hCath","Cathode;#DeltaE (a.u.)", binEr, Er[0], Er[1]);
+    hCa4 = new TH1F("hCa4","Ca4;#DeltaE (a.u.)", binEr, Er[0], Er[1]);
+    hCa1 = new TH1F("hCa1","Ca1;#DeltaE (a.u.)", binEr, Er[0], Er[1]);
     hSi = new TH1F("hSi", "hSi;#DeltaE (a.u.)", binEr, Er[0], Er[1]);
     csi = new TCanvas("csi","csi",800,800);
     crate= new TCanvas("crate","crate",1200,1200);crate->Divide(1,2);
@@ -79,8 +79,8 @@ void OnlineVisu()
     evt_time =(timestampVec[0])*1e-12;
     temp_index=Map_DAQCha_to_MONICAsignal[0][Channel];
     if(temp_index<NAnode+1){  dE_anode[temp_index-1]=Energy;TimingRate->Fill(evt_time);  hA[temp_index-1]->Fill( dE_anode[temp_index-1]);evt_mult+=1;    }
-    if(temp_index==NAnode+1){ Cathode=Energy;TimingRate->Fill(evt_time);   hCath->Fill(Cathode);evt_mult+=1;  }
-    if(temp_index==NAnode+2){ Grid=Energy;  TimingRate->Fill(evt_time);   hGrid->Fill(Grid);evt_mult+=1; }
+    if(temp_index==NAnode+1){ Ca1=Energy;TimingRate->Fill(evt_time);   hCa1->Fill(Ca1);evt_mult+=1;  }
+    if(temp_index==NAnode+2){ Ca4=Energy;  TimingRate->Fill(evt_time);   hCa4->Fill(Ca4);evt_mult+=1; }
     if(temp_index==20){Si_dE=Energy; TimingRate->Fill(evt_time);   hSi->Fill(Si_dE);evt_mult+=1; }
     for(int j=1;j<nStat*proportion_of_file_for_Plot;j++){
         Tree_data->GetEntry(entryVec[j]);
@@ -101,8 +101,8 @@ void OnlineVisu()
         }
         temp_index=Map_DAQCha_to_MONICAsignal[0][Channel];
         if(temp_index<NAnode+1){   dE_anode[temp_index-1]=Energy;TimingRate->Fill(evt_time);  hA[temp_index-1]->Fill( dE_anode[temp_index-1]);evt_mult+=1;        }
-        if(temp_index==NAnode+1){  Cathode=Energy;TimingRate->Fill(evt_time);   hCath->Fill(Cathode);evt_mult+=1;  }
-        if(temp_index==NAnode+2){  Grid=Energy;  TimingRate->Fill(evt_time);   hGrid->Fill(Grid);evt_mult+=1; }
+        if(temp_index==NAnode+1){  Ca1=Energy;TimingRate->Fill(evt_time);   hCa1->Fill(Ca1);evt_mult+=1;  }
+        if(temp_index==NAnode+2){  Ca4=Energy;  TimingRate->Fill(evt_time);   hCa4->Fill(Ca4);evt_mult+=1; }
         if(temp_index==20){Si_dE=Energy; TimingRate->Fill(evt_time);   hSi->Fill(Si_dE); evt_mult+=1;}
     }
     gStyle->SetOptStat("nei");
@@ -114,20 +114,20 @@ void OnlineVisu()
     crate->cd(2); EvtMultiplicity->Draw("colz");
     EvtMultiplicity->GetXaxis()->CenterTitle();EvtMultiplicity->GetYaxis()->CenterTitle();
     cposi->cd(1); hA4_P23->Draw("colz"); gPad->SetLogz();
-    hA4_P23->GetXaxis()->CenterTitle(); hA4_P23->GetYaxis()->CenterTitle();
+    hA4_P23->GetXaxis()->CenterTitle(); hA4_P23->GetYaxis()->CenterTitle(); hA4_P23->GetYaxis()->SetTitleOffset(0.9);
     cposi->cd(2); hA5_P23->Draw("colz"); gPad->SetLogz();
-    hA5_P23->GetXaxis()->CenterTitle(); hA5_P23->GetYaxis()->CenterTitle();
+    hA5_P23->GetXaxis()->CenterTitle(); hA5_P23->GetYaxis()->CenterTitle(); hA5_P23->GetYaxis()->SetTitleOffset(0.9);
     cposi->cd(3);hA5_P67->Draw("colz");gPad->SetLogz();
-    hA5_P67->GetXaxis()->CenterTitle(); hA5_P67->GetYaxis()->CenterTitle();
+    hA5_P67->GetXaxis()->CenterTitle(); hA5_P67->GetYaxis()->CenterTitle(); hA5_P67->GetYaxis()->SetTitleOffset(0.9);
     cposi->cd(4);hA8_P67->Draw("colz");gPad->SetLogz();
-    hA8_P67->GetXaxis()->CenterTitle(); hA8_P67->GetYaxis()->CenterTitle();
+    hA8_P67->GetXaxis()->CenterTitle(); hA8_P67->GetYaxis()->CenterTitle();hA8_P67->GetYaxis()->SetTitleOffset(0.9);
     for(int a=0;a<NAnode;a++){
         cindi->cd(a+1); hA[a]->Draw(); gPad->SetLogy();
         hA[a]->GetXaxis()->CenterTitle();hA[a]->GetYaxis()->CenterTitle();
     }
-    cindi->cd(9);    hGrid->Draw();  gPad->SetLogy();   hGrid->SetLineColor(4);
-    hGrid->GetXaxis()->CenterTitle();    hGrid->GetYaxis()->CenterTitle();
-    hCath->Draw("same");      hCath->SetLineColor(2);
-    legend->AddEntry("hCath","Cathode","l"); legend->AddEntry("hGrid","Grid","l");       legend->Draw("same");
+    cindi->cd(9);  hCa4->Draw();  gPad->SetLogy();  hCa4->SetLineColor(4);
+    hCa4->GetXaxis()->CenterTitle();    hCa4->GetYaxis()->CenterTitle();
+    hCa1->Draw("same");      hCa1->SetLineColor(2);
+    legend->AddEntry("hCa1","Ca1","l"); legend->AddEntry("hCa4","Ca4","l");       legend->Draw("same");
  
 }
