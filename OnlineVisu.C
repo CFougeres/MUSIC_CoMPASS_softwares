@@ -56,10 +56,10 @@ void OnlineVisu()
    // gStyle->SetOptLogy(1);
     TimingRate = new TH1F("TimingRate","Timing;Timestamp (s);Counts/1#mus",binTr, Tr[0], Tr[1]);
     EvtMultiplicity = new TH2F("EvtMultiplicity",";Evt time (s);Multiplicity",binTr,Tr[0],Tr[1],16,0,15);
-    hA4_P23 = new TH2F("hA4_P23","; #DeltaE_{4} (arb. u.);P23 (arb. u.)",binEr, Er[0], Er[1],2*binEr, -Er[1], Er[1]);
-    hA5_P23 = new TH2F("hA5_P23","; #DeltaE_{5} (arb. u.);P23 (arb. u.)",binEr, Er[0], Er[1],2*binEr, -Er[1], Er[1]);
-    hA5_P67 = new TH2F("hA5_P67","; #DeltaE_{5} (arb. u.);P67 (arb. u.)",binEr, Er[0], Er[1],2*binEr, -Er[1], Er[1]);
-    hA8_P67 = new TH2F("hA8_P68","; #DeltaE_{8} (arb. u.);P67 (arb. u.)",binEr, Er[0], Er[1],2*binEr, -Er[1], Er[1]);
+    hA4_P23 = new TH2F("hA4_P23",";P23 (arb. u.); #DeltaE_{4} (arb. u.)",2*binEr, -Er[1], Er[1],binEr, Er[0], Er[1]);
+    hA5_P23 = new TH2F("hA5_P23",";P23 (arb. u.); #DeltaE_{5} (arb. u.)",2*binEr, -Er[1], Er[1],binEr, Er[0], Er[1]);
+    hA5_P67 = new TH2F("hA5_P67",";P67 (arb. u.); #DeltaE_{5} (arb. u.)",2*binEr, -Er[1], Er[1],binEr, Er[0], Er[1]);
+    hA8_P67 = new TH2F("hA8_P68",";P67 (arb. u.); #DeltaE_{8} (arb. u.)",2*binEr, -Er[1], Er[1],binEr, Er[0], Er[1]);
 
     for( int i = 0 ; i < NAnode; i++){
         hA[i] = new TH1F(Form("hA%0d",i), Form("A%0d;#DeltaE (a.u.)",i+1), binEr, Er[0], Er[1]);
@@ -92,8 +92,8 @@ void OnlineVisu()
             if(dE_anode[1]*dE_anode[2]>0){P23 = RangePositionCoeff*((dE_anode[1]-dE_anode[2])/(dE_anode[1]+dE_anode[2]));}
            // cout<<P23 <<endl;
             if(dE_anode[5]*dE_anode[6]>0) {P67 =  RangePositionCoeff*((dE_anode[5]-dE_anode[6])/(dE_anode[5]+dE_anode[6]));}
-            hA4_P23->Fill(dE_anode[3], P23); hA5_P23->Fill(dE_anode[4], P23);
-            hA5_P67->Fill(dE_anode[4], P67); hA8_P67->Fill(dE_anode[7], P67);
+            hA4_P23->Fill(P23, dE_anode[3]); hA5_P23->Fill(P23,dE_anode[4]);
+            hA5_P67->Fill(P67, dE_anode[4]); hA8_P67->Fill(P67, dE_anode[7]);
             for(int a=0;a<NAnode;a++){
                 dE_anode[a]=0.;
             }
