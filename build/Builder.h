@@ -55,7 +55,7 @@ int extraction_inputs(){
     in.open(path_input.c_str());
     Int_t nlines = 0;   string line; int nlist = 0;
     while(1){
-        if(nlines==0 || nlines == 2|| nlines == 8){
+        if(nlines==0 || nlines == 2){
             in >> index_inputs[nlines] >> variable[nlines] ;
             cout<<index_inputs[nlines]<<" "<<variable[nlines] <<endl;
         }
@@ -67,7 +67,7 @@ int extraction_inputs(){
            nlist++;
            list_temp.clear();
         }
-        if(nlines!=0 && nlines!=2 && nlines!=4&& nlines!=5 && nlines!=6 && nlines!=8){
+        if(nlines!=0 && nlines!=2 && nlines!=4&& nlines!=5 && nlines!=6){
             in >> index_inputs[nlines] >> variable[nlines] >>  param_inputs[nlines][0];
             cout<<index_inputs[nlines]<<" "<<variable[nlines] <<" "<<  param_inputs[nlines][0] <<endl;
        }
@@ -75,7 +75,8 @@ int extraction_inputs(){
         nlines++;
     }
     in.close();
-    cout<<"\NumberOfRun " <<" RunsNumbers "<<" FilesPerRun " << " InitSubFiles " <<endl;
+    cout<<"\NumberOfRun " <<param_inputs[3][0]<<endl;
+    cout<<" RunsNumbers "<<" FilesPerRun " << " InitSubFiles " <<endl;
     for(int r=0;r<param_inputs[3][0];r++){
         param_inputs[4][r]= int(list[0][r+1]);
         param_inputs[5][r]=int(list[1][r+1]);
@@ -127,17 +128,20 @@ UShort_t Channel;
 ULong64_t Timestamp;
 UShort_t Board;
 UShort_t Energy;
-TChain* Tree_data = new TChain("Data_R");
-int nStat;
+TChain* Tree_data[MaxN]; 
+int nStat[MaxN]; 
 int sortZero;
 int sortLength;
+Double_t* timestampVec[MaxN] ={0};   
+Int_t* entryVec[MaxN] ={0}; 
 Double_t dE_anode[NAnode]={0};
 Double_t Ca1; Double_t Ca4;
 Double_t evt_time; Double_t evt_mult;
 Double_t P23; Double_t P67;
 Double_t Si_dE;
 double RangePositionCoeff;
+double GainA3toA2;
+double GainA7toA6;
 
 double run_portion = 1.;
 TFile* outputFile[10];  TTree* Tree_Event[10];
-
