@@ -5,4 +5,6 @@
 4 RunsNumbers 1
 5 NumberOfSubFiles 1
 6 InitSubFiles 0
-7 RangePositionCoeff 200000
+7 RangePositionCoeff 5000
+8 GainA3toA2 0.90206565
+9 GainA7toA6 0.94334458
