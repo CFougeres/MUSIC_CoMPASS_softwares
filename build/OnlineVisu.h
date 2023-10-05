@@ -6,7 +6,7 @@
 
 int Nrun;
 int run_number[MaxN];
-int files_per_run[ MaxN];
+int files_per_run[MaxN];
 int init_file[MaxN];
 
 TH1F* TimingRate;
@@ -31,9 +31,9 @@ auto legend = new TLegend(0.1, 0.2, 0.4, 0.4);
 int Er[2]={0,16000};
 double bin_raw_to_MeV=4.;
 int binEr= int((Er[1]-Er[0])/bin_raw_to_MeV);
-int Tr[2];
+int Tr[2]={0};
 int binTr;
-
+double tempTime;
 
 
 #endif
