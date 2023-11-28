@@ -10,34 +10,34 @@ void BuilderToRoot()     //us unit
     printf("=====================================\n");
     //USER INPUTS
     int applied_extraction_inputs = extraction_inputs();
-    int Nrun  = param_inputs[5][0];int init_file = param_inputs[8][0];
+    int Nrun  = param_inputs[7][0];int init_file = param_inputs[10][0];
     int run_number[MaxNSample] ; int files_per_run[MaxNSample] ;
     for(int r=0;r<Nrun;r++){
-        run_number[r]= int(param_inputs[6][r]);
-        files_per_run[r]=int(param_inputs[7][r]);
+        run_number[r]= int(param_inputs[8][r]);
+        files_per_run[r]=int(param_inputs[9][r]);
         cout<<run_number[r]<<" "<<files_per_run[r]<<endl;
     }
   
     TString fileName ;  BinReader * reader[Nrun][MaxNSample];
     for(int r=0;r<Nrun;r++){
-		for(int f=0;f<files_per_run[r];f++){
-			if(f==0){
-				if(init_file==0){fileName = pathRun + Form("/DAQ/run_%i/RAW/DataR_run_%i.BIN",run_number[r], run_number[r]);}
-				if(init_file>0){	
-					fileName = pathRun+  Form("/DAQ/run_%i/RAW/DataR_run_%i_%i.BIN",run_number[r], run_number[r], init_file);
-				}
-			}
-			if(f>0){ 
-				fileName= pathRun+Form("/DAQ/run_%i/RAW/DataR_run_%i_%i.BIN",run_number[r], run_number[r],f+init_file);
-			}
-			printf(fileName);
-			reader[r][f]= new BinReader(fileName);  
+        for(int f=0;f<files_per_run[r];f++){
+            if(f==0){
+                if(init_file==0){fileName = pathRun + Form("/DAQ/run_%i/RAW/DataR_run_%i.BIN",run_number[r], run_number[r]);}
+                if(init_file>0){
+                    fileName = pathRun+  Form("/DAQ/run_%i/RAW/DataR_run_%i_%i.BIN",run_number[r], run_number[r], init_file);
+                }
+            }
+            if(f>0){
+                fileName= pathRun+Form("/DAQ/run_%i/RAW/DataR_run_%i_%i.BIN",run_number[r], run_number[r],f+init_file);
+            }
+            printf(fileName);
+            reader[r][f]= new BinReader(fileName);
             if(f>0)reader[r][f]->SetHeader(HeaderSubfile);
             if(f==0 && init_file>0)reader[r][f]->SetHeader(HeaderSubfile);
-			reader[r][f]->ScanNumberOfBlock();
-			printf("################## Number of data Block : %llu \n", reader[r][f]->GetNumberOfBlock());
-			}
-	}
+            reader[r][f]->ScanNumberOfBlock();
+            printf("################## Number of data Block : %llu \n", reader[r][f]->GetNumberOfBlock());
+            }
+    }
     //TREE storing
     //(only first run file for latter on time synchronization)
     TTree* MUSICdata[Nrun][MaxNSample];
