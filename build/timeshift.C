@@ -18,11 +18,11 @@ void timeshift(){
     
     //USER INPUTS
     int applied_extraction_inputs = extraction_inputs();
-    int RunNumber= int( param_inputs[14][0]);int FileNumber= int( param_inputs[15][0]);
-    Double_t OverlapTMin=  param_inputs[16][0];  Double_t OverlapTMax=  param_inputs[16][1]; //SECOND
-    Double_t threshDT = param_inputs[17][0]; //MICROSECOND
-    UShort_t Board=  param_inputs[19][0];UShort_t Chan=  param_inputs[19][1];  UShort_t minE=  param_inputs[19][2] ; UShort_t maxE=  param_inputs[19][3];
-    UShort_t refBoard =  param_inputs[18][0]; UShort_t refChan =  param_inputs[18][1];  UShort_t refMinE=  param_inputs[18][2]; UShort_t refMaxE=  param_inputs[18][3];
+    int RunNumber= int( param_inputs[16][0]);int FileNumber= int( param_inputs[17][0]);
+    Double_t OverlapTMin=  param_inputs[18][0];  Double_t OverlapTMax=  param_inputs[18][1]; //SECOND
+    Double_t threshDT = param_inputs[19][0]; //MICROSECOND
+    UShort_t Board=  param_inputs[21][0];UShort_t Chan=  param_inputs[21][1];  UShort_t minE=  param_inputs[21][2] ; UShort_t maxE=  param_inputs[21][3];
+    UShort_t refBoard =  param_inputs[20][0]; UShort_t refChan =  param_inputs[20][1];  UShort_t refMinE=  param_inputs[20][2]; UShort_t refMaxE=  param_inputs[20][3];
     TString infile = pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,FileNumber);
     TFile* myFile = new TFile(infile);
     TTree* tree = (TTree*)myFile->Get("Data_R");
