@@ -12,9 +12,9 @@ void normEsegment()
 
     //USER INPUTS
     int applied_extraction_inputs = extraction_inputs();
-    int RunNumber = param_inputs[24][0];    int FileNumber = param_inputs[25][0];
-    double segEBeamrange[2]= {param_inputs[26][0],param_inputs[26][1]};
-    double extEBeamrange[2]= {param_inputs[27][0],param_inputs[27][1]};
+    int RunNumber = param_inputs[26][0];    int FileNumber = param_inputs[27][0];
+    double segEBeamrange[2]= {param_inputs[28][0],param_inputs[28][1]};
+    double extEBeamrange[2]= {param_inputs[29][0],param_inputs[29][1]};
 
     TChain* MUSICdata = new TChain("Data_R");
     string fileName =  pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,FileNumber);
