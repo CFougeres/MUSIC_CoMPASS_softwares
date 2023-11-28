@@ -93,11 +93,11 @@ int extraction_inputs(){
     in.open(path_input.c_str());
     Int_t nlines = 0;   string line; int nlist = 0;
     while(1){
-        if(nlines==0 || nlines ==4  || nlines == 9 || nlines == 13 || nlines == 20 || nlines == 23 || nlines == 28){
+        if(nlines==0 || nlines ==6  || nlines == 11 || nlines == 15 || nlines == 22 || nlines == 25 || nlines == 30){
             in >> index_inputs[nlines] >> variable[nlines] ;
             cout<<index_inputs[nlines]<<" "<<variable[nlines] <<endl;
         }
-       if(nlines==6 || nlines ==7 ){
+       if(nlines==8 || nlines ==9 ){
            ws(in);
            getline(in,line);
            parseFloats(line,list_temp);
@@ -106,15 +106,15 @@ int extraction_inputs(){
            nlist++;
            list_temp.clear();
         }
-        if(nlines==16 || nlines== 22 || nlines== 26 || nlines== 27){
+        if(nlines==5 ||nlines==18 || nlines== 24 || nlines== 28 || nlines== 29){
             in >> index_inputs[nlines] >> variable[nlines] >>   param_inputs[nlines][0]  >>  param_inputs[nlines][1];
             cout<<index_inputs[nlines]<<" "<<variable[nlines] <<" "<<  param_inputs[nlines][0]<<" "<<  param_inputs[nlines][1] <<endl;
         }
-        if(nlines==18 || nlines==19){
+        if(nlines==20 || nlines==21){
             in >> index_inputs[nlines] >> variable[nlines] >>  param_inputs[nlines][0]  >>  param_inputs[nlines][1] >>  param_inputs[nlines][2] >>  param_inputs[nlines][3];
             cout<<index_inputs[nlines]<<" "<<variable[nlines] <<" "<<  param_inputs[nlines][0]<<" "<< param_inputs[nlines][1] <<" "<<  param_inputs[nlines][2]<<" "<<  param_inputs[nlines][3] <<endl;
         }
-        if(nlines!=0 && nlines!=4 && nlines!=6 && nlines!=7 && nlines!=9 && nlines!=13 && nlines!=16 && nlines!=18 && nlines!=19 && nlines!=20 && nlines!=22 && nlines!=23 && nlines!=26 && nlines!=27 && nlines!=28){
+        if(nlines!=0 && nlines!=6 && nlines!=8 && nlines!=9 && nlines!=11 && nlines!=15 && nlines!=18 && nlines!=20 && nlines!=21 && nlines!=22 && nlines!=24 && nlines!=25 && nlines!=28 && nlines!=29 && nlines!=30){
             in >> index_inputs[nlines] >> variable[nlines] >>  param_inputs[nlines][0];
             cout<<index_inputs[nlines]<<" "<<variable[nlines] <<" "<<  param_inputs[nlines][0] <<endl;
        }
@@ -123,10 +123,10 @@ int extraction_inputs(){
     }
     in.close();
     cout<<"\nRunNumber "<<" FilesPerRun " <<endl;
-    for(int r=0;r<param_inputs[5][0];r++){
-        param_inputs[6][r]= int(list[0][r+1]);
-        param_inputs[7][r]=int(list[1][r+1]);
-        cout<< param_inputs[6][r]<<" "<<param_inputs[7][r]<<endl;
+    for(int r=0;r<param_inputs[7][0];r++){
+        param_inputs[8][r]= int(list[0][r+1]);
+        param_inputs[9][r]=int(list[1][r+1]);
+        cout<< param_inputs[8][r]<<" "<<param_inputs[9][r]<<endl;
     }
     
     return 1;
