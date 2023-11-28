@@ -9,8 +9,8 @@ void checkingTimeSync()
 
     //USER INPUTS
     int applied_extraction_inputs = extraction_inputs();
-    int RunNumber = param_inputs[29][0];    int FileNumber = param_inputs[30][0];     double limE[2]={param_inputs[26][0],param_inputs[26][1]};
-    double TimeMin= param_inputs[31][0];//ms
+    int RunNumber = param_inputs[31][0];    int FileNumber = param_inputs[32][0];     double limE[2]={param_inputs[28][0],param_inputs[28][1]};
+    double TimeMin= param_inputs[33][0];//ms
     TChain* MUSICdata = new TChain("Data_R");
     string fileName =  pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,FileNumber );
     cout<<fileName<<endl;    MUSICdata->Add(fileName.c_str());     double run_portion=1.0; if(TimeMin<1){run_portion=0.5;}
@@ -66,8 +66,8 @@ void checkingTimeSync()
            if(Board>0){
                if(temp_index<NChannel){if(temp_index%2==0){timeBother= (timestampVec[i]*1e-12)*1e+6;}}
                if(temp_index>NChannel-1){if((temp_index-NChannel)%2==1){timeBother= (timestampVec[i]*1e-12)*1e+6;}}
-               if(temp_index>100){timeBother= (timestampVec[i]*1e-12)*1e+6;}         
-	}
+               if(temp_index>100){timeBother= (timestampVec[i]*1e-12)*1e+6;}
+           }
            dt=timeB0-timeBother;
            dThisto->Fill(dt);
        }
