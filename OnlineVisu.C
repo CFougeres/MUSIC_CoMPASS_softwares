@@ -5,8 +5,6 @@
 ***************************************/
 #include "build/OnlineVisu.h"
 
-double calibSi[2]={5.71353,3.25666e-02};//dV100{5.71353,3.25666e-02}   {5.16073,3.19968e-02};//dV150
-
 using namespace std;
 
 void OnlineVisu()
@@ -17,21 +15,25 @@ void OnlineVisu()
   
     //USER INPUTS
     int applied_extraction_inputs = extraction_inputs();
-    int RunNumber = param_inputs[10][0];    int FileNumber = param_inputs[11][0];
-    int DetectorType=param_inputs[12][0];    int applied_calib=param_inputs[3][0];
-    double TimeWindow=param_inputs[1][0];
-    double normMUSIC=param_inputs[2][0];    Double_t BeamExternal[2]={param_inputs[22][0],param_inputs[22][1]};
-    Double_t shiftTime[NBoard]; int looked_for_shift = extraction_ShiftBoardTime(RunNumber,shiftTime);
-    if(looked_for_shift==0){for(int b=0;b<NBoard;b++){shiftTime[b]=0;} cout<<"!!! time shifts per board not found !!!"<<endl;}
-    if(looked_for_shift==1){for(int b=0;b<NBoard;b++){cout<<Form("Board shift %i ",b)<<shiftTime[b]<<endl;}}
+    int RunNumber = param_inputs[12][0];    int FileNumber = param_inputs[13][0];
+    int DetectorType=param_inputs[14][0];       double TimeWindow=param_inputs[1][0];
+    int applied_timeSync=param_inputs[2][0]; int applied_calib=param_inputs[4][0];
+    Double_t calibSi[2]={param_inputs[5][0],param_inputs[6][1]};
+    double normMUSIC = param_inputs[3][0];    Double_t BeamExternal[2]={param_inputs[24][0],param_inputs[24][1]};
+    Double_t shiftTime[NBoard]; int looked_for_shift;
+    if(applied_timeSync==1){
+        looked_for_shift=extraction_ShiftBoardTime(RunNumber,shiftTime);
+        if(looked_for_shift==0){for(int b=0;b<NBoard;b++){shiftTime[b]=0;} cout<<"!!! time shifts per board not found !!!"<<endl;}
+        if(looked_for_shift==1){for(int b=0;b<NBoard;b++){cout<<Form("Board shift %i ",b)<<shiftTime[b]<<endl;}}
+    }
 
     TChain* Tree_data = new TChain("Data_R"); 	string data_path;
     if(DetectorType==1){
 		data_path = pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,FileNumber);
 	}
 	if(DetectorType==0){
-		if(FileNumber==0){data_path = pathRun+ Form("/DAQ/runSi_%i/RAW/DataR_runSi_%i.root",RunNumber, RunNumber);}
-		if(FileNumber>0){data_path = pathRun+ Form("/DAQ/runSi_%i/RAW/DataR_runSi_%i_%i.root",RunNumber, RunNumber,FileNumber);}
+        if(FileNumber==0){		data_path = pathRun+ Form("/DAQ/runSi_%i/RAW/DataR_runSi_%i_%i.root",RunNumber, RunNumber);}
+        if(FileNumber>0){        data_path = pathRun+ Form("/DAQ/runSi_%i/RAW/DataR_runSi_%i_%i.root",RunNumber, RunNumber,FileNumber);}
 	}
 	cout<<data_path<<endl;    Tree_data->Add(data_path.c_str());
     //"""""""""""""""""""""
@@ -59,7 +61,7 @@ void OnlineVisu()
         MapFull = new TH2F("MapFull",";Strip; #DeltaE (a.u.)", NChannel+2,0,NChannel+2,binEr, Er[0], Er[1]);
         MapLeft = new TH2F("MapLeft","Left;Strip; #DeltaE (a.u.)", NChannel+2,0,NChannel+2, binEr, Er[0], Er[1]);
         MapRight = new TH2F("MapRight","Right;Strip; #DeltaE (a.u.)",  NChannel+2,0,NChannel+2, binEr, Er[0], Er[1]);
-        MapTime = new TH2F("MapRTime",Form(";Time (ms); Board*%i+Channel",NChannel), 5000,0,50,NBoard*NChannel+1,0,NBoard*NChannel+1);
+        MapTime = new TH2F("MapRTime",Form(";Time (#mus); Board*%i+Channel",NChannel), 5000,0,5000,NBoard*NChannel+1,0,NBoard*NChannel+1);
         S0A1l = new TH2F("S0A1l",";#DeltaE_{0} (a.u.); #DeltaE_{1} left (a.u.)", binEr, Er[0], Er[1], binEr, Er[0], Er[1]);
         S0cath = new TH2F("S0cath",";#DeltaE_{0} (a.u.); Cathode (a.u.)",binEr, Er[0], Er[1],16000/4,0,16000);
         S0grid = new TH2F("S0grid",";#DeltaE_{0} (a.u.);Grid (a.u.)",binEr, Er[0], Er[1],16000/4,0,16000);
@@ -90,15 +92,19 @@ void OnlineVisu()
         //"""""""""""""""""""""
         double grid=0; double cath=0; double left1=0; double right2=0; double s0=0; double s17=0;
         double shiftedTime;     int temp_index;
-        Tree_data->GetEntry(0);shiftedTime = (Timestamp - shiftTime[Board]*1e+12)*1e-12; Double_t TimeEv =shiftedTime;
+        Tree_data->GetEntry(0);
+        if(applied_timeSync==1){ shiftedTime = (Timestamp - shiftTime[Board]*1e+12)*1e-12;}
+        if(applied_timeSync==0){ shiftedTime = Timestamp *1e-12;}
+        Double_t TimeEv =shiftedTime;
         double  diffTimeEvent;
         for(int j=0;j<nStat*proportion_of_file_for_MUSICPlot;j++){
             Tree_data->GetEntry(j);
             temp_index=Map_DAQCha_to_MUSICStrip[Board][Channel];
             hBoard->Fill(Board);hChannel[Board]->Fill(Channel);
             //timing
-            shiftedTime = (Timestamp - shiftTime[Board]*1e+12)*1e-12;
-            MapTime->Fill( shiftedTime*1000. , Board*NChannel+Channel);
+            if(applied_timeSync==1){ shiftedTime = (Timestamp - shiftTime[Board]*1e+12)*1e-12;}
+            if(applied_timeSync==0){ shiftedTime = Timestamp *1e-12;}
+            MapTime->Fill( shiftedTime*1000.*1000, Board*NChannel+Channel);
             diffTimeEvent= (shiftedTime-TimeEv)*1e+6;
             if(diffTimeEvent>TimeWindow){
                 S0A1l->Fill(s0,left1); S0cath->Fill(s0,cath);S0grid->Fill(s0,grid);
