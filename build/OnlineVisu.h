@@ -28,7 +28,7 @@ TCanvas * Musicright;
 TCanvas * cmult;
 TCanvas * cindi;
 
-double calibE(TH1F* calibHisto, TH1F* rawHisto, double param[]){
+double calibE(TH1F* calibHisto, TH1F* rawHisto, Double_t param[]){
     TAxis* hax= rawHisto->GetXaxis();
     TRandom*r = new TRandom1();
     int NBins=rawHisto->GetNbinsX();
