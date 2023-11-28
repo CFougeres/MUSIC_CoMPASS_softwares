@@ -12,9 +12,10 @@ int BuildingEvent(int RunNumber, int file)
     printf("=====================================\n");
     //USER INPUTS
     int applied_extraction_inputs = extraction_inputs();
-    double Ibeam = param_inputs[21][0]; int applied_calib = param_inputs[3][0]; double TimeWindow  = param_inputs[1][0];
-    double normMUSIC  = param_inputs[2][0];
-    Double_t BeamExternal[2]={param_inputs[22][0], param_inputs[22][1]};
+    int applied_timeSync=param_inputs[2][0]; int applied_calib = param_inputs[4][0];
+    double Ibeam = param_inputs[23][0];  double TimeWindow  = param_inputs[1][0];
+    double normMUSIC  = param_inputs[3][0];
+    Double_t BeamExternal[2]={param_inputs[24][0], param_inputs[24][1]};
     
     TChain* MUSICdata = new TChain("Data_R");
     string fileName =  pathRun + Form("/RootFiles/Raw/Data_R_%i_%i.root",RunNumber,file);
@@ -53,9 +54,12 @@ int BuildingEvent(int RunNumber, int file)
     int nStat = MUSICdata->GetEntries();
     std::cout<<nStat<<std::endl;
     
-    Double_t shiftTime[NBoard]; int looked_for_shift = extraction_ShiftBoardTime(RunNumber,shiftTime);
-    if(looked_for_shift==0){for(int b=0;b<NBoard;b++){shiftTime[b]=0;} cout<<"!!! time shifts per board not found !!!"<<endl;}
-    if(looked_for_shift==1){for(int b=0;b<NBoard;b++){cout<<Form("Board shift %i ",b)<<shiftTime[b]<<endl;}}
+    Double_t shiftTime[NBoard]; int looked_for_shift;
+    if(applied_timeSync==1){
+        looked_for_shift=extraction_ShiftBoardTime(RunNumber,shiftTime);
+        if(looked_for_shift==0){for(int b=0;b<NBoard;b++){shiftTime[b]=0;} cout<<"!!! time shifts per board not found !!!"<<endl;}
+        if(looked_for_shift==1){for(int b=0;b<NBoard;b++){cout<<Form("Board shift %i ",b)<<shiftTime[b]<<endl;}}
+    }
 
     //"""""""""""""""""""""
     //Calibration
@@ -77,7 +81,8 @@ int BuildingEvent(int RunNumber, int file)
     int sortZero = 0;int sortLength=nStat-1;
     for(int j=0;j<nStat;j++){
         MUSICdata->GetEntry(j);
-        timestampVec[j]= (Timestamp - shiftTime[Board]*1e+12);
+        if(applied_timeSync==1){ timestampVec[j]= (Timestamp - shiftTime[Board]*1e+12);}
+        if(applied_timeSync==0){ timestampVec[j]= Timestamp ;}
         entryVec[j]=j;
     }
     quicksort(timestampVec, entryVec,sortZero,sortLength);
@@ -116,8 +121,6 @@ int BuildingEvent(int RunNumber, int file)
             outputFile[compteur_tree] = new TFile(Form("tree_%i.root",compteur_tree), "RECREATE");
         }
         if(timestampVec[i+1]-timestampVec[i]<0){ std::cout<<"issue time sorting "<<std::endl;break;}
-        //tempTime =  ((Timestamp*1e-12) - shiftTime[Board])*pow(10,6);
-        //if(timestampVec[i]>0){
         diffTimeEvent= (timestampVec[i]*1e-12-TimeEv)*1e+6;
         if(diffTimeEvent>TimeWindow){
             std::cout<<i/double(nStat)*100.<<  std::endl;
