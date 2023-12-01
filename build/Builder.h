@@ -114,13 +114,14 @@ int extraction_inputs(){
             in >> index_inputs[nlines] >> variable[nlines] >>  param_inputs[nlines][0]  >>  param_inputs[nlines][1] >>  param_inputs[nlines][2] >>  param_inputs[nlines][3];
             cout<<index_inputs[nlines]<<" "<<variable[nlines] <<" "<<  param_inputs[nlines][0]<<" "<< param_inputs[nlines][1] <<" "<<  param_inputs[nlines][2]<<" "<<  param_inputs[nlines][3] <<endl;
         }
-        if(nlines!=0 && nlines!=6 && nlines!=8 && nlines!=9 && nlines!=11 && nlines!=15 && nlines!=18 && nlines!=20 && nlines!=21 && nlines!=22 && nlines!=24 && nlines!=25 && nlines!=28 && nlines!=29 && nlines!=30){
+        if(nlines!=0 && nlines!=5 && nlines!=6 && nlines!=8 && nlines!=9 && nlines!=11 && nlines!=15 && nlines!=18 && nlines!=20 && nlines!=21 && nlines!=22 && nlines!=24 && nlines!=25 && nlines!=28 && nlines!=29 && nlines!=30){
             in >> index_inputs[nlines] >> variable[nlines] >>  param_inputs[nlines][0];
             cout<<index_inputs[nlines]<<" "<<variable[nlines] <<" "<<  param_inputs[nlines][0] <<endl;
        }
         if (!in.good()) break;
         nlines++;
     }
+    cout<< param_inputs[7][0]<< endl;
     in.close();
     cout<<"\nRunNumber "<<" FilesPerRun " <<endl;
     for(int r=0;r<param_inputs[7][0];r++){
