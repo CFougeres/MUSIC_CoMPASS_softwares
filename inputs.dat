@@ -3,8 +3,8 @@
 2 TimeSync 0
 3 normMUSIC 10
 4 AppliedCalib 1
-5 calibSi 5.71353 3.25666e-02
-6 BUILDERtoROOT
+5 calibSi 5.71353 0.0325666
+6 BUILDERtoRoot
 7 Nrun 2
 8 RunNumber 1 2 
 9 FilesPerRun 3 2
